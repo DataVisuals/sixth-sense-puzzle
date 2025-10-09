@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sixth Sense</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+            min-height: 100vh;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 900px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-out;
+            margin: 10px 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 2em;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            color: #1f2937;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            padding: 12px 32px;
+            font-size: 1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .mode-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Setter Styles */
+        .sentence-input {
+            margin-bottom: 12px;
+            padding: 12px;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .sentence-input:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+
+        .sentence-input label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9em;
+        }
+
+        .sentence-input input[type="text"],
+        .sentence-input textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .sentence-input input[type="text"]:focus,
+        .sentence-input textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .sentence-input input[type="number"] {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .sentence-input input[type="number"]:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .letter-position {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .final-word-input {
+            margin: 20px 0;
+            padding: 16px;
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            border-radius: 16px;
+            border: 2px solid #e9d5ff;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
+        }
+
+        .final-word-input label {
+            color: #6b21a8;
+            font-size: 1.1em;
+        }
+
+        .final-word-input input {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.3em;
+            text-transform: uppercase;
+            text-align: center;
+            border: 3px solid #8b5cf6;
+            border-radius: 12px;
+            font-weight: 700;
+            letter-spacing: 8px;
+            transition: all 0.3s ease;
+            font-family: monospace;
+            margin-top: 12px;
+        }
+
+        .final-word-input input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.15em;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Guesser Styles */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 12px;
+            border: 2px solid #7dd3fc;
+        }
+
+        .theme-clue {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #0369a1;
+        }
+
+        .timer {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #0c4a6e;
+            font-family: monospace;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .sentence-item {
+            margin-bottom: 12px;
+            padding: 12px;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .sentence-item:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
+        }
+
+        .sentence-display {
+            font-size: 1.05em;
+            margin-bottom: 12px;
+            line-height: 1.6;
+            color: #1f2937;
+        }
+
+        .blank {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #ddd6fe, #e9d5ff);
+            border-radius: 8px;
+            margin: 0 6px;
+            font-weight: 700;
+            color: #7c3aed;
+            letter-spacing: 4px;
+            font-family: monospace;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .guess-input-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .guess-input-container input {
+            flex: 1;
+            padding: 14px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .guess-input-container input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .guess-input-container button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        }
+
+        .guess-input-container button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .guess-input-container button:active {
+            transform: translateY(0);
+        }
+
+        .guess-input-container button:disabled {
+            background: linear-gradient(135deg, #9ca3af, #6b7280);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .clue-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .clue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+
+        .clue-btn:active {
+            transform: translateY(0);
+        }
+
+        .clue-btn:disabled {
+            background: linear-gradient(135deg, #9ca3af, #6b7280);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .status {
+            margin-top: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .status.correct {
+            color: #059669;
+            background: #d1fae5;
+            border: 1px solid #6ee7b7;
+        }
+
+        .status.incorrect {
+            color: #dc2626;
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+        }
+
+        .revealed-word {
+            color: #059669;
+            font-weight: 700;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .highlighted-letter {
+            background: linear-gradient(135deg, #fde047, #fbbf24);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 800;
+            color: #78350f;
+            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+            animation: pulse 0.5s ease-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .letters-collected {
+            margin: 15px 0 10px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            border-radius: 16px;
+            text-align: center;
+            border: 2px solid #e9d5ff;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
+        }
+
+        .letters-collected h3 {
+            margin-bottom: 12px;
+            color: #6b21a8;
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        .collected-letters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .letter-box {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #8b5cf6;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6em;
+            font-weight: 800;
+            background: white;
+            color: #7c3aed;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+            transition: all 0.3s ease;
+            font-family: monospace;
+        }
+
+        .letter-box:not(.empty) {
+            animation: letterAppear 0.5s ease-out;
+        }
+
+        @keyframes letterAppear {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .letter-box.empty {
+            background: #f3f4f6;
+            color: #d1d5db;
+            border-color: #d1d5db;
+            box-shadow: none;
+        }
+
+        .final-guess-container label {
+            color: #6b21a8;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .final-guess-container input {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.3em;
+            text-transform: uppercase;
+            text-align: center;
+            border: 3px solid #8b5cf6;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 8px;
+            transition: all 0.3s ease;
+            font-family: monospace;
+        }
+
+        .final-guess-container input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .success-animation {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .success-animation h2 {
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        .success-icons {
+            font-size: 5em;
+            margin: 30px 0;
+            animation: bounce 0.6s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0) scale(1);
+            }
+            to {
+                transform: translateY(-25px) scale(1.05);
+            }
+        }
+
+        .play-again-btn {
+            margin-top: 20px;
+        }
+
+        .help-text {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f59e0b;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+        }
+
+        .help-text p {
+            margin-bottom: 6px;
+            line-height: 1.4;
+            color: #78350f;
+            font-size: 0.9em;
+        }
+
+        .help-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .help-text strong {
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The Sixth Sense</h1>
+
+        <div id="mode-selection">
+            <div id="user-stats" style="text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #faf5ff, #f3e8ff); border-radius: 12px; border: 2px solid #e9d5ff;">
+                <h3 style="color: #6b21a8; margin-bottom: 12px; font-size: 1.1em;">Your Statistics</h3>
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em;">🏆</div>
+                        <div style="font-weight: 700; font-size: 1.3em; color: #d97706;" id="gold-count">0</div>
+                        <div style="font-size: 0.85em; color: #6b7280;">Gold</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; filter: grayscale(0.3) brightness(1.3);">🏆</div>
+                        <div style="font-weight: 700; font-size: 1.3em; color: #6b7280;" id="silver-count">0</div>
+                        <div style="font-size: 0.85em; color: #6b7280;">Silver</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; filter: hue-rotate(20deg) saturate(1.5) brightness(0.9);">🏆</div>
+                        <div style="font-weight: 700; font-size: 1.3em; color: #92400e;" id="bronze-count">0</div>
+                        <div style="font-size: 0.85em; color: #6b7280;">Bronze</div>
+                    </div>
+                    <div style="text-align: center; border-left: 2px solid #e9d5ff; padding-left: 20px;">
+                        <div style="font-size: 2em;">🔥</div>
+                        <div style="font-weight: 700; font-size: 1.3em; color: #ea580c;" id="streak-count">0</div>
+                        <div style="font-size: 0.85em; color: #6b7280;">Day Streak</div>
+                    </div>
+                    <div style="text-align: center; border-left: 2px solid #e9d5ff; padding-left: 20px;">
+                        <div style="font-size: 2em;">⚡</div>
+                        <div style="font-weight: 700; font-size: 1.3em; color: #7c3aed; font-family: monospace;" id="fastest-time">--:--</div>
+                        <div style="font-size: 0.85em; color: #6b7280;">Best Time</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mode-selector">
+                <button class="mode-btn" onclick="showSetter()">Create Puzzle</button>
+                <button class="mode-btn" onclick="showGuesser()">Play Puzzle</button>
+            </div>
+            <div style="text-align: center; margin-top: 24px; padding: 20px; background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: 12px; border: 2px solid #86efac;">
+                <p style="margin-bottom: 12px; font-weight: 600; color: #166534;">Play Today's Puzzle:</p>
+                <button class="mode-btn" onclick="quickPlay()" style="background: linear-gradient(135deg, #10b981, #059669); width: auto; padding: 14px 32px;">📅 Daily Puzzle</button>
+            </div>
+        </div>
+
+        <!-- SETTER INTERFACE -->
+        <div id="setter-interface" class="hidden">
+            <h2>Create Your Puzzle</h2>
+
+            <div class="help-text">
+                <p><strong>Quick Start:</strong> Load a pre-made puzzle to test the game or get inspired!</p>
+                <div style="display: flex; gap: 12px; margin-top: 12px; align-items: center;">
+                    <select id="puzzle-selector" style="flex: 1; padding: 12px; border: 2px solid #f59e0b; border-radius: 8px; font-size: 1em; background: white; font-weight: 600; cursor: pointer;">
+                        <option value="">-- Select a Pre-made Puzzle --</option>
+                    </select>
+                    <button onclick="loadSelectedPuzzle()" style="padding: 12px 24px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3); transition: all 0.3s ease;">Load Puzzle</button>
+                </div>
+            </div>
+
+            <div class="help-text" style="margin-top: 20px;">
+                <p><strong>Or Create Your Own:</strong></p>
+                <p>1. Write 5 sentences, using <strong>___</strong> (three underscores) as a placeholder for the missing word</p>
+                <p>2. Enter the missing word separately (the guesser will NOT see this)</p>
+                <p>3. For each missing word, specify which letter position (1-based) contributes to the final word</p>
+                <p>4. Enter the final 5-letter word that will be formed from those letters</p>
+                <p><strong>Example:</strong> "The cat sat on the ___" with missing word "mat"</p>
+            </div>
+
+            <div id="setter-form">
+                <div class="sentence-input">
+                    <label>Sentence 1:</label>
+                    <textarea id="sentence1" rows="2" placeholder="e.g., The cat sat on the ___"></textarea>
+                    <label>Missing Word:</label>
+                    <input type="text" id="word1" placeholder="e.g., mat">
+                    <div class="letter-position">
+                        <label>Letter position for final word (1-based):</label>
+                        <input type="number" id="position1" min="1" value="1">
+                    </div>
+                </div>
+
+                <div class="sentence-input">
+                    <label>Sentence 2:</label>
+                    <textarea id="sentence2" rows="2" placeholder="Enter your sentence with a missing word"></textarea>
+                    <label>Missing Word:</label>
+                    <input type="text" id="word2" placeholder="Enter the missing word">
+                    <div class="letter-position">
+                        <label>Letter position for final word (1-based):</label>
+                        <input type="number" id="position2" min="1" value="1">
+                    </div>
+                </div>
+
+                <div class="sentence-input">
+                    <label>Sentence 3:</label>
+                    <textarea id="sentence3" rows="2" placeholder="Enter your sentence with a missing word"></textarea>
+                    <label>Missing Word:</label>
+                    <input type="text" id="word3" placeholder="Enter the missing word">
+                    <div class="letter-position">
+                        <label>Letter position for final word (1-based):</label>
+                        <input type="number" id="position3" min="1" value="1">
+                    </div>
+                </div>
+
+                <div class="sentence-input">
+                    <label>Sentence 4:</label>
+                    <textarea id="sentence4" rows="2" placeholder="Enter your sentence with a missing word"></textarea>
+                    <label>Missing Word:</label>
+                    <input type="text" id="word4" placeholder="Enter the missing word">
+                    <div class="letter-position">
+                        <label>Letter position for final word (1-based):</label>
+                        <input type="number" id="position4" min="1" value="1">
+                    </div>
+                </div>
+
+                <div class="sentence-input">
+                    <label>Sentence 5:</label>
+                    <textarea id="sentence5" rows="2" placeholder="Enter your sentence with a missing word"></textarea>
+                    <label>Missing Word:</label>
+                    <input type="text" id="word5" placeholder="Enter the missing word">
+                    <div class="letter-position">
+                        <label>Letter position for final word (1-based):</label>
+                        <input type="number" id="position5" min="1" value="1">
+                    </div>
+                </div>
+
+                <div class="final-word-input">
+                    <label><strong>Final 5-Letter Word (to be guessed):</strong></label>
+                    <input type="text" id="finalWord" maxlength="5" placeholder="Enter final word" style="text-transform: uppercase;">
+                </div>
+
+                <button class="btn" onclick="savePuzzle()">Save Puzzle & Start Game</button>
+            </div>
+        </div>
+
+        <!-- GUESSER INTERFACE -->
+        <div id="guesser-interface" class="hidden">
+            <div id="game-area">
+                <h2>Guess the Missing Words</h2>
+                <div class="game-header">
+                    <div class="theme-clue">
+                        <span id="theme-display"></span>
+                    </div>
+                    <div class="timer" id="timer">00:00</div>
+                </div>
+                <div id="sentences-container"></div>
+
+                <div class="letters-collected">
+                    <h3>Collected Letters (Anagram)</h3>
+                    <div class="collected-letters" id="collected-letters">
+                        <div class="letter-box empty">?</div>
+                        <div class="letter-box empty">?</div>
+                        <div class="letter-box empty">?</div>
+                        <div class="letter-box empty">?</div>
+                        <div class="letter-box empty">?</div>
+                    </div>
+                    <div class="final-guess-container">
+                        <p style="margin: 15px 0 10px 0; font-size: 1.05em; color: #6b21a8; font-style: italic;">
+                            My sixth sense tells me that the word is...
+                        </p>
+                        <input type="text" id="final-guess" maxlength="5" placeholder="Enter your guess" oninput="validateFinalGuess()">
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="btn" id="submit-final-btn" onclick="checkFinalGuess()" style="flex: 1;" disabled>Submit Final Answer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="success-screen" class="hidden success-animation">
+                <h2>Congratulations!</h2>
+                <div id="trophy-display" style="font-size: 6em; margin: 20px 0;">🏆</div>
+                <p id="trophy-text" style="font-size: 1.3em; margin: 10px 0; font-weight: 700; color: #059669;">
+                    You have won a gold trophy!
+                </p>
+                <p style="font-size: 1.4em; margin: 15px 0; font-weight: 600; color: #059669;">You solved the puzzle!</p>
+                <p style="font-size: 1.2em; margin: 10px 0; font-weight: 600; color: #0c4a6e;">
+                    Time: <span id="completion-time" style="font-family: monospace;">00:00</span>
+                </p>
+                <button class="btn play-again-btn" onclick="resetGame()">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cookie helper functions
+        function setCookie(name, value, days) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+            document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + '=';
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // User stats management
+        function loadUserStats() {
+            const statsString = getCookie('userStats');
+            if (statsString) {
+                try {
+                    return JSON.parse(statsString);
+                } catch (e) {
+                    return {
+                        goldTrophies: 0,
+                        silverTrophies: 0,
+                        bronzeTrophies: 0,
+                        lastPlayedDate: null,
+                        currentStreak: 0,
+                        fastestTime: null
+                    };
+                }
+            }
+            return {
+                goldTrophies: 0,
+                silverTrophies: 0,
+                bronzeTrophies: 0,
+                lastPlayedDate: null,
+                currentStreak: 0,
+                fastestTime: null
+            };
+        }
+
+        function saveUserStats(stats) {
+            setCookie('userStats', JSON.stringify(stats), 365); // Save for 1 year
+        }
+
+        function updateUserStats(trophyType, completionTimeSeconds) {
+            const stats = loadUserStats();
+
+            // Update trophy count
+            if (trophyType === 'gold') {
+                stats.goldTrophies++;
+            } else if (trophyType === 'silver') {
+                stats.silverTrophies++;
+            } else if (trophyType === 'bronze') {
+                stats.bronzeTrophies++;
+            }
+
+            // Update fastest time
+            if (!stats.fastestTime || completionTimeSeconds < stats.fastestTime) {
+                stats.fastestTime = completionTimeSeconds;
+            }
+
+            // Update streak
+            const today = new Date().toDateString();
+            const lastPlayed = stats.lastPlayedDate;
+
+            if (!lastPlayed) {
+                // First time playing
+                stats.currentStreak = 1;
+            } else {
+                const lastDate = new Date(lastPlayed);
+                const todayDate = new Date(today);
+                const diffTime = todayDate - lastDate;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 0) {
+                    // Same day, don't change streak
+                } else if (diffDays === 1) {
+                    // Consecutive day
+                    stats.currentStreak++;
+                } else {
+                    // Streak broken, restart
+                    stats.currentStreak = 1;
+                }
+            }
+
+            stats.lastPlayedDate = today;
+            saveUserStats(stats);
+            displayUserStats();
+        }
+
+        function displayUserStats() {
+            const stats = loadUserStats();
+            document.getElementById('gold-count').textContent = stats.goldTrophies;
+            document.getElementById('silver-count').textContent = stats.silverTrophies;
+            document.getElementById('bronze-count').textContent = stats.bronzeTrophies;
+            document.getElementById('streak-count').textContent = stats.currentStreak;
+
+            // Display fastest time
+            if (stats.fastestTime) {
+                const minutes = Math.floor(stats.fastestTime / 60);
+                const seconds = stats.fastestTime % 60;
+                document.getElementById('fastest-time').textContent =
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            } else {
+                document.getElementById('fastest-time').textContent = '--:--';
+            }
+        }
+
+        // Initialize stats on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            displayUserStats();
+        });
+
+        // Pre-made puzzle database
+        // Final word letters must exactly match collected letters
+        const puzzleDatabase = [
+            {
+                name: "Coastal Escape",
+                theme: "beach",
+                sentences: [
+                    "The warm ___ feels soft to touch",
+                    "Colorful ___ can be seen scattered along the beach",
+                    "The sparkling ___ can be seen in the distance",
+                    "The salty ___ can be smelled in the air",
+                    "I can hear ___ crashing on the rocks"
+                ],
+                words: ["sand", "shells", "ocean", "breeze", "waves"],
+                positions: [0, 1, 0, 1, 3], // S, H, O, R, E
+                finalWord: "SHORE"
+            },
+            {
+                name: "Woodland Path",
+                theme: "forest",
+                sentences: [
+                    "Tall ___ can be seen towering above",
+                    "I can hear the ___ chirping",
+                    "The pine ___ smell fresh",
+                    "Fresh ___ tastes crisp",
+                    "I can touch the rough ___"
+                ],
+                words: ["trees", "birds", "cones", "air", "bark"],
+                positions: [0, 2, 0, 0, 3], // T, R, C, A, K
+                finalWord: "TRACK"
+            },
+            {
+                name: "Drops from Above",
+                theme: "rain",
+                sentences: [
+                    "Dark ___ can be seen gathering",
+                    "I can hear the ___ falling",
+                    "Wet ___ smells fresh",
+                    "Cool ___ tastes clean",
+                    "I can touch the damp ___"
+                ],
+                words: ["clouds", "rain", "earth", "water", "grass"],
+                positions: [0, 0, 0, 1, 3], // C, R, E, A, S
+                finalWord: "CARES"
+            },
+            {
+                name: "Evening Embers",
+                theme: "camping",
+                sentences: [
+                    "Glowing ___ can be seen dancing",
+                    "Wood ___ loudly and I can hear it",
+                    "I can smell the ___ in the air",
+                    "Roasted ___ taste sweet",
+                    "I can touch the warm ___"
+                ],
+                words: ["embers", "crackles", "smoke", "nuts", "stones"],
+                positions: [0, 5, 1, 2, 0], // E, L, M, T, S
+                finalWord: "MELTS"
+            },
+            {
+                name: "Blooming Grounds",
+                theme: "garden",
+                sentences: [
+                    "Colorful ___ can be seen blooming",
+                    "I can hear the ___ chirping",
+                    "The fresh ___ smells wonderful",
+                    "Ripe ___ taste delicious",
+                    "I can touch the moist ___"
+                ],
+                words: ["tulips", "robin", "earth", "plums", "soil"],
+                positions: [0, 1, 0, 1, 0], // T, O, E, L, S
+                finalWord: "STOLE"
+            }
+        ];
+
+        let puzzleData = null;
+        let gameState = {
+            guessedWords: [false, false, false, false, false],
+            collectedLetters: ['', '', '', '', ''],
+            cluesUsed: 0,
+            wordCluesUsed: [0, 0, 0, 0, 0] // Track number of clues per word
+        };
+        let timerInterval = null;
+        let startTime = null;
+        let elapsedTime = 0;
+
+        function showSetter() {
+            document.getElementById('mode-selection').classList.add('hidden');
+            document.getElementById('setter-interface').classList.remove('hidden');
+            document.getElementById('guesser-interface').classList.add('hidden');
+            populatePuzzleSelector();
+        }
+
+        function populatePuzzleSelector() {
+            const selector = document.getElementById('puzzle-selector');
+            // Clear existing options except the first one
+            selector.innerHTML = '<option value="">-- Select a Pre-made Puzzle --</option>';
+
+            // Add all puzzles from database
+            puzzleDatabase.forEach((puzzle, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = puzzle.name;
+                selector.appendChild(option);
+            });
+        }
+
+        function loadSelectedPuzzle() {
+            const selector = document.getElementById('puzzle-selector');
+            const selectedIndex = selector.value;
+
+            if (selectedIndex === '') {
+                alert('Please select a puzzle from the dropdown first!');
+                return;
+            }
+
+            const puzzle = puzzleDatabase[selectedIndex];
+
+            // Fill in the form with the selected puzzle data
+            for (let i = 0; i < 5; i++) {
+                document.getElementById(`sentence${i + 1}`).value = puzzle.sentences[i];
+                document.getElementById(`word${i + 1}`).value = puzzle.words[i];
+                document.getElementById(`position${i + 1}`).value = puzzle.positions[i] + 1; // Convert to 1-based
+            }
+
+            document.getElementById('finalWord').value = puzzle.finalWord;
+
+            alert(`Loaded "${puzzle.name}" puzzle! You can edit it or click "Save Puzzle & Start Game" to play.`);
+        }
+
+        function getPuzzleOfTheDay() {
+            // Get current date
+            const now = new Date();
+            // Calculate days since epoch (Jan 1, 1970)
+            const daysSinceEpoch = Math.floor(now.getTime() / (1000 * 60 * 60 * 24));
+            // Use modulo to cycle through puzzles
+            const puzzleIndex = daysSinceEpoch % puzzleDatabase.length;
+            return puzzleIndex;
+        }
+
+        function quickPlay() {
+            // Get the puzzle of the day (same for all users on the same day)
+            const puzzleIndex = getPuzzleOfTheDay();
+            const puzzle = puzzleDatabase[puzzleIndex];
+
+            // Save it as the current puzzle
+            localStorage.setItem('wordPuzzle', JSON.stringify(puzzle));
+
+            // Start the game
+            showGuesser();
+        }
+
+        function showGuesser() {
+            document.getElementById('mode-selection').classList.add('hidden');
+            document.getElementById('setter-interface').classList.add('hidden');
+            document.getElementById('guesser-interface').classList.remove('hidden');
+
+            // Load puzzle data
+            const savedPuzzle = localStorage.getItem('wordPuzzle');
+            if (savedPuzzle) {
+                puzzleData = JSON.parse(savedPuzzle);
+                initializeGame();
+            } else {
+                alert('No puzzle found! Please create one first.');
+                showModeSelection();
+            }
+        }
+
+        function showModeSelection() {
+            document.getElementById('mode-selection').classList.remove('hidden');
+            document.getElementById('setter-interface').classList.add('hidden');
+            document.getElementById('guesser-interface').classList.add('hidden');
+        }
+
+        function savePuzzle() {
+            const puzzle = {
+                sentences: [],
+                words: [],
+                positions: [],
+                finalWord: document.getElementById('finalWord').value.toUpperCase().trim()
+            };
+
+            // Validate final word
+            if (puzzle.finalWord.length !== 5) {
+                alert('Final word must be exactly 5 letters!');
+                return;
+            }
+
+            // Collect all sentences, words, and positions
+            for (let i = 1; i <= 5; i++) {
+                const sentence = document.getElementById(`sentence${i}`).value.trim();
+                const word = document.getElementById(`word${i}`).value.trim().toLowerCase();
+                const position = parseInt(document.getElementById(`position${i}`).value);
+
+                if (!sentence || !word) {
+                    alert(`Please fill in sentence ${i} and its missing word!`);
+                    return;
+                }
+
+                if (!sentence.includes('___')) {
+                    alert(`Sentence ${i} must contain ___ (three underscores) as a placeholder for the missing word!`);
+                    return;
+                }
+
+                if (position < 1 || position > word.length) {
+                    alert(`Letter position for word ${i} must be between 1 and ${word.length}!`);
+                    return;
+                }
+
+                puzzle.sentences.push(sentence);
+                puzzle.words.push(word);
+                puzzle.positions.push(position - 1); // Convert to 0-based index
+            }
+
+            // Validate that the letters form the final word
+            const collectedLetters = puzzle.words.map((word, idx) =>
+                word[puzzle.positions[idx]].toUpperCase()
+            ).join('');
+
+            const sortedCollected = collectedLetters.split('').sort().join('');
+            const sortedFinal = puzzle.finalWord.split('').sort().join('');
+
+            if (sortedCollected !== sortedFinal) {
+                alert(`Warning: The collected letters (${collectedLetters}) don't match the final word (${puzzle.finalWord}) when sorted. Make sure they form an anagram!`);
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('wordPuzzle', JSON.stringify(puzzle));
+            alert('Puzzle saved successfully!');
+
+            // Switch to guesser mode
+            showGuesser();
+        }
+
+        function startTimer() {
+            startTime = Date.now() - elapsedTime;
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function updateTimer() {
+            elapsedTime = Date.now() - startTime;
+            const seconds = Math.floor(elapsedTime / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const displaySeconds = seconds % 60;
+            document.getElementById('timer').textContent =
+                `${String(minutes).padStart(2, '0')}:${String(displaySeconds).padStart(2, '0')}`;
+        }
+
+        function resetTimer() {
+            stopTimer();
+            elapsedTime = 0;
+            document.getElementById('timer').textContent = '00:00';
+        }
+
+        function initializeGame() {
+            const container = document.getElementById('sentences-container');
+            container.innerHTML = '';
+
+            // Reset game state
+            gameState = {
+                guessedWords: [false, false, false, false, false],
+                collectedLetters: ['', '', '', '', ''],
+                cluesUsed: 0,
+                wordCluesUsed: [0, 0, 0, 0, 0]
+            };
+
+            // Clear the final guess input and disable submit button
+            document.getElementById('final-guess').value = '';
+            document.getElementById('submit-final-btn').disabled = true;
+
+            // Display theme clue
+            const themeDisplay = document.getElementById('theme-display');
+            if (puzzleData.name) {
+                themeDisplay.textContent = puzzleData.name;
+            } else if (puzzleData.theme) {
+                themeDisplay.textContent = puzzleData.theme.charAt(0).toUpperCase() + puzzleData.theme.slice(1);
+            } else {
+                themeDisplay.textContent = 'Mystery';
+            }
+
+            // Reset and start timer
+            resetTimer();
+            startTimer();
+
+            // Create sentence items
+            puzzleData.sentences.forEach((sentence, index) => {
+                const div = document.createElement('div');
+                div.className = 'sentence-item';
+                div.id = `sentence-item-${index}`;
+
+                // Create blank with correct number of underscores
+                const wordLength = puzzleData.words[index].length;
+                const underscores = '_'.repeat(wordLength);
+                const sentenceWithBlank = sentence.replace('___', `<span class="blank">${underscores}</span>`);
+
+                div.innerHTML = `
+                    <div class="sentence-display" id="sentence-display-${index}">
+                        ${sentenceWithBlank}
+                    </div>
+                    <div class="guess-input-container">
+                        <input type="text" id="guess-${index}" placeholder="Your guess (${wordLength} letters)">
+                        <button onclick="checkGuess(${index})">Submit</button>
+                        <button class="clue-btn" id="clue-${index}" onclick="giveClue(${index})">💡 Clue</button>
+                    </div>
+                    <div class="status" id="status-${index}"></div>
+                `;
+
+                container.appendChild(div);
+            });
+
+            updateCollectedLetters();
+        }
+
+        function checkGuess(index) {
+            const guessInput = document.getElementById(`guess-${index}`);
+            const guess = guessInput.value.trim().toLowerCase();
+            const correctWord = puzzleData.words[index];
+            const statusDiv = document.getElementById(`status-${index}`);
+
+            if (guess === correctWord) {
+                // Correct guess
+                statusDiv.textContent = 'Correct!';
+                statusDiv.className = 'status correct';
+                guessInput.disabled = true;
+                document.querySelector(`#sentence-item-${index} button`).disabled = true;
+                document.getElementById(`clue-${index}`).disabled = true;
+
+                // Mark as guessed
+                gameState.guessedWords[index] = true;
+
+                // Get the letter for the final word
+                const letterPosition = puzzleData.positions[index];
+                const letter = correctWord[letterPosition].toUpperCase();
+                gameState.collectedLetters[index] = letter;
+
+                // Update display with highlighted letter
+                const wordWithHighlight = correctWord.split('').map((char, idx) => {
+                    if (idx === letterPosition) {
+                        return `<span class="highlighted-letter">${char}</span>`;
+                    }
+                    return char;
+                }).join('');
+
+                // Replace ___ with the revealed word
+                const sentenceDisplay = document.getElementById(`sentence-display-${index}`);
+                const sentenceWithWord = puzzleData.sentences[index].replace('___', `<span class="revealed-word">${wordWithHighlight}</span>`);
+                sentenceDisplay.innerHTML = sentenceWithWord;
+
+                // Update collected letters display
+                updateCollectedLetters();
+            } else {
+                // Incorrect guess
+                statusDiv.textContent = 'Try again!';
+                statusDiv.className = 'status incorrect';
+                guessInput.value = '';
+            }
+        }
+
+        function giveClue(index) {
+            const correctWord = puzzleData.words[index];
+            const statusDiv = document.getElementById(`status-${index}`);
+
+            // Track how many clues have been given for this word
+            if (!gameState.wordCluesUsed[index]) {
+                gameState.wordCluesUsed[index] = 0;
+            }
+            gameState.wordCluesUsed[index]++;
+
+            // Randomly choose between letter reveal or first letter
+            const clueType = Math.random() > 0.5 ? 'letter' : 'first';
+
+            if (clueType === 'letter') {
+                // Reveal a random letter position
+                const randomPos = Math.floor(Math.random() * correctWord.length);
+                const letter = correctWord[randomPos];
+                statusDiv.textContent = `Clue: Letter ${randomPos + 1} is "${letter}"`;
+                statusDiv.className = 'status';
+                statusDiv.style.background = '#fef3c7';
+                statusDiv.style.color = '#92400e';
+                statusDiv.style.border = '1px solid #fbbf24';
+            } else {
+                // Provide a simple clue (first letter)
+                const firstLetter = correctWord[0];
+                statusDiv.textContent = `Clue: Word starts with "${firstLetter}"`;
+                statusDiv.className = 'status';
+                statusDiv.style.background = '#fef3c7';
+                statusDiv.style.color = '#92400e';
+                statusDiv.style.border = '1px solid #fbbf24';
+            }
+
+            // Track total clue usage
+            gameState.cluesUsed++;
+        }
+
+        function validateFinalGuess() {
+            const guess = document.getElementById('final-guess').value.trim();
+            const submitBtn = document.getElementById('submit-final-btn');
+
+            // Enable button only if exactly 5 letters
+            if (guess.length === 5) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        function updateCollectedLetters() {
+            const container = document.getElementById('collected-letters');
+            container.innerHTML = '';
+
+            gameState.collectedLetters.forEach(letter => {
+                const box = document.createElement('div');
+                box.className = letter ? 'letter-box' : 'letter-box empty';
+                box.textContent = letter || '?';
+                container.appendChild(box);
+            });
+        }
+
+        function checkFinalGuess() {
+            const guess = document.getElementById('final-guess').value.toUpperCase().trim();
+
+            if (guess.length !== 5) {
+                alert('Please enter a 5-letter word!');
+                return;
+            }
+
+            // Check if all words have been guessed
+            const allGuessed = gameState.guessedWords.every(g => g);
+            if (!allGuessed) {
+                alert('Please guess all the missing words first!');
+                return;
+            }
+
+            if (guess === puzzleData.finalWord) {
+                // Success! Stop the timer
+                stopTimer();
+
+                // Show completion time in success message
+                const finalTime = document.getElementById('timer').textContent;
+                document.getElementById('completion-time').textContent = finalTime;
+
+                // Calculate completion time in seconds
+                const completionTimeSeconds = Math.floor(elapsedTime / 1000);
+
+                // Determine trophy based on clues used
+                const trophyDisplay = document.getElementById('trophy-display');
+                const trophyText = document.getElementById('trophy-text');
+                let trophyType;
+
+                if (gameState.cluesUsed === 0) {
+                    // Gold trophy
+                    trophyDisplay.textContent = '🏆';
+                    trophyDisplay.style.filter = 'hue-rotate(0deg) brightness(1.2)';
+                    trophyText.textContent = 'You have won a gold trophy!';
+                    trophyText.style.color = '#d97706'; // Gold color
+                    trophyType = 'gold';
+                } else if (gameState.cluesUsed === 1) {
+                    // Silver trophy
+                    trophyDisplay.textContent = '🏆';
+                    trophyDisplay.style.filter = 'grayscale(0.3) brightness(1.3)';
+                    trophyText.textContent = 'You have won a silver trophy!';
+                    trophyText.style.color = '#6b7280'; // Silver color
+                    trophyType = 'silver';
+                } else {
+                    // Bronze trophy
+                    trophyDisplay.textContent = '🏆';
+                    trophyDisplay.style.filter = 'hue-rotate(20deg) saturate(1.5) brightness(0.9)';
+                    trophyText.textContent = 'You have won a bronze trophy!';
+                    trophyText.style.color = '#92400e'; // Bronze color
+                    trophyType = 'bronze';
+                }
+
+                // Update user stats
+                updateUserStats(trophyType, completionTimeSeconds);
+
+                document.getElementById('game-area').classList.add('hidden');
+                document.getElementById('success-screen').classList.remove('hidden');
+            } else {
+                alert('Not quite! Try rearranging the letters.');
+                document.getElementById('final-guess').value = '';
+            }
+        }
+
+        function resetGame() {
+            document.getElementById('game-area').classList.remove('hidden');
+            document.getElementById('success-screen').classList.add('hidden');
+            showModeSelection();
+        }
+    </script>
+</body>
+</html>
