@@ -1131,6 +1131,7 @@
         // Pre-made puzzle database
         // Final word letters must exactly match collected letters
         const puzzleDatabase = [
+            // EASY PUZZLES
             {
                 name: "Coastal Escape",
                 theme: "beach",
@@ -1159,6 +1160,50 @@
                 positions: [0, 2, 0, 0, 3], // T, R, C, A, K
                 finalWord: "TRACK"
             },
+            {
+                name: "Morning Ritual",
+                theme: "breakfast",
+                sentences: [
+                    "Golden ___ can be seen on the plate",
+                    "I can hear the ___ bubbling",
+                    "Fresh ___ smells amazing",
+                    "Sweet ___ tastes delicious",
+                    "Warm ___ feels comforting to touch"
+                ],
+                words: ["toast", "kettle", "bread", "honey", "mug"],
+                positions: [0, 2, 1, 0, 2], // T, T, R, H, G
+                finalWord: "GIRTH"
+            },
+            {
+                name: "Winter Wonder",
+                theme: "winter",
+                sentences: [
+                    "White ___ can be seen falling",
+                    "I can hear the ___ howling",
+                    "Cold ___ smells crisp",
+                    "Frozen ___ tastes icy",
+                    "Rough ___ feels bumpy to touch"
+                ],
+                words: ["flakes", "wind", "air", "sleet", "ice"],
+                positions: [0, 0, 0, 1, 0], // F, W, A, L, I
+                finalWord: "AWFUL"
+            },
+            {
+                name: "City Streets",
+                theme: "urban",
+                sentences: [
+                    "Tall ___ can be seen everywhere",
+                    "I can hear ___ honking",
+                    "Street ___ smell greasy",
+                    "Quick ___ taste spicy",
+                    "Cold ___ feels smooth to touch"
+                ],
+                words: ["towers", "horns", "foods", "tacos", "steel"],
+                positions: [0, 0, 4, 0, 1], // T, H, S, T, E
+                finalWord: "THOSE"
+            },
+
+            // MEDIUM PUZZLES
             {
                 name: "Drops from Above",
                 theme: "rain",
@@ -1200,6 +1245,190 @@
                 words: ["tulips", "robin", "earth", "plums", "soil"],
                 positions: [0, 1, 0, 1, 0], // T, O, E, L, S
                 finalWord: "STOLE"
+            },
+            {
+                name: "Market Day",
+                theme: "market",
+                sentences: [
+                    "Fresh ___ can be seen displayed",
+                    "I can hear ___ calling out",
+                    "Ripe ___ smell sweet",
+                    "Juicy ___ taste tangy",
+                    "Smooth ___ feel waxy to touch"
+                ],
+                words: ["apples", "vendors", "berries", "lemon", "pears"],
+                positions: [0, 0, 1, 0, 1], // A, V, E, L, E
+                finalWord: "LEAVE"
+            },
+            {
+                name: "Alpine Heights",
+                theme: "mountain",
+                sentences: [
+                    "Rocky ___ can be seen rising",
+                    "I can hear distant ___ echoing",
+                    "Thin ___ smells pure",
+                    "Melted ___ tastes mineral",
+                    "Jagged ___ feel sharp to touch"
+                ],
+                words: ["peaks", "birds", "air", "snow", "rocks"],
+                positions: [0, 2, 0, 1, 0], // P, R, A, N, R
+                finalWord: "APRON"
+            },
+            {
+                name: "Desert Heat",
+                theme: "desert",
+                sentences: [
+                    "Golden ___ can be seen stretching",
+                    "I can hear the ___ rustling",
+                    "Hot ___ smells dusty",
+                    "Dry ___ tastes gritty",
+                    "Prickly ___ feel rough to touch"
+                ],
+                words: ["dunes", "wind", "air", "sand", "cacti"],
+                positions: [0, 0, 0, 1, 1], // D, W, A, N, A
+                finalWord: "WANDA"
+            },
+
+            // HARDER PUZZLES
+            {
+                name: "Ancient Ruins",
+                theme: "archaeology",
+                sentences: [
+                    "Weathered ___ can be seen crumbling",
+                    "I can hear the ___ whistling through",
+                    "Musty ___ smell of age",
+                    "Bitter ___ taste on my lips",
+                    "Worn ___ feel ancient to touch"
+                ],
+                words: ["stones", "breeze", "tombs", "dust", "relics"],
+                positions: [0, 2, 0, 1, 2], // S, E, T, U, L
+                finalWord: "SETUP"
+            },
+            {
+                name: "Artisan Workshop",
+                theme: "crafts",
+                sentences: [
+                    "Spinning ___ can be seen turning",
+                    "I can hear the ___ clanging",
+                    "Fresh ___ smells earthy",
+                    "Bitter ___ tastes metallic",
+                    "Rough ___ feels coarse to touch"
+                ],
+                words: ["wheel", "anvil", "clay", "iron", "twine"],
+                positions: [0, 1, 2, 0, 3], // W, N, A, I, N
+                finalWord: "WANING"
+            },
+            {
+                name: "Observatory Night",
+                theme: "astronomy",
+                sentences: [
+                    "Bright ___ can be seen twinkling",
+                    "I can hear distant ___ orbiting",
+                    "Cold ___ smells sterile",
+                    "The ___ tastes like infinity",
+                    "The powerful ___ feels smooth to touch"
+                ],
+                words: ["stars", "planets", "air", "cosmos", "telescope"],
+                positions: [0, 0, 0, 0, 1], // S, P, A, C, E
+                finalWord: "SPACE"
+            },
+            {
+                name: "Storm Brewing",
+                theme: "weather",
+                sentences: [
+                    "Dark ___ can be seen rolling",
+                    "I can hear ___ rumbling",
+                    "Charged ___ smells electric",
+                    "Heavy ___ tastes fresh",
+                    "Swirling ___ feels damp to touch"
+                ],
+                words: ["skies", "thunder", "ozone", "rain", "mist"],
+                positions: [0, 0, 0, 0, 0], // S, T, O, R, M
+                finalWord: "STORM"
+            },
+            {
+                name: "Bakery Morning",
+                theme: "bakery",
+                sentences: [
+                    "Fresh ___ can be seen cooling",
+                    "I can hear the ___ sizzling",
+                    "Warm ___ smells heavenly",
+                    "The rich ___ tastes buttery",
+                    "Soft ___ feels pillowy to touch"
+                ],
+                words: ["buns", "rolls", "bread", "aroma", "dough"],
+                positions: [0, 0, 2, 0, 0], // B, R, E, A, D
+                finalWord: "BREAD"
+            },
+            {
+                name: "Harbor View",
+                theme: "port",
+                sentences: [
+                    "Large ___ can be seen docked",
+                    "I can hear ___ calling",
+                    "Salty ___ smells fishy",
+                    "Briny ___ tastes of ocean",
+                    "Coarse ___ feels rough to touch"
+                ],
+                words: ["boats", "gulls", "water", "spray", "ropes"],
+                positions: [0, 2, 0, 1, 0], // B, L, W, R, R
+                finalWord: "BRAWL"
+            },
+            {
+                name: "Autumn Harvest",
+                theme: "fall",
+                sentences: [
+                    "Golden ___ can be seen falling",
+                    "I can hear ___ crunching",
+                    "Smoky ___ smells earthy",
+                    "Sweet ___ taste rich",
+                    "Cool ___ feels crisp to touch"
+                ],
+                words: ["leaves", "acorns", "piles", "cider", "wind"],
+                positions: [0, 0, 3, 0, 3], // L, A, E, C, D
+                finalWord: "LACED"
+            },
+            {
+                name: "Museum Halls",
+                theme: "museum",
+                sentences: [
+                    "Priceless ___ can be seen displayed",
+                    "I can hear ___ echoing",
+                    "Polished ___ smells clean",
+                    "Stale ___ tastes recycled",
+                    "Cold ___ feels hard to touch"
+                ],
+                words: ["relics", "steps", "marble", "air", "glass"],
+                positions: [0, 1, 0, 0, 2], // R, T, M, A, A
+                finalWord: "DRAMA"
+            },
+            {
+                name: "Spice Market",
+                theme: "bazaar",
+                sentences: [
+                    "Colorful ___ can be seen piled high",
+                    "I can hear ___ bargaining",
+                    "Exotic ___ smell pungent",
+                    "Spicy ___ taste bold",
+                    "Rough ___ feels coarse to touch"
+                ],
+                words: ["spices", "traders", "curry", "chili", "sacks"],
+                positions: [0, 0, 2, 0, 1], // S, T, R, C, A
+                finalWord: "CARTS"
+            },
+            {
+                name: "Midnight Owl",
+                theme: "nocturnal",
+                sentences: [
+                    "The dark ___ can be seen everywhere",
+                    "I can hear ___ buzzing",
+                    "The ___ moon can be seen shining",
+                    "Soft ___ can be heard echoing",
+                    "Rough ___ feel ancient to touch"
+                ],
+                words: ["night", "insects", "glowing", "hoots", "trees"],
+                positions: [0, 0, 0, 0, 0], // N, I, G, H, T
+                finalWord: "NIGHT"
             }
         ];
 
