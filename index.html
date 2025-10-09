@@ -554,6 +554,278 @@
         .help-text strong {
             color: #92400e;
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                padding: 15px;
+                margin: 5px 0;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 10px;
+            }
+
+            h2 {
+                font-size: 1.1em;
+                margin-bottom: 10px;
+            }
+
+            .mode-selector {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .mode-btn {
+                padding: 12px 20px;
+                font-size: 0.95em;
+                width: 100%;
+            }
+
+            /* User Stats - Mobile friendly */
+            #user-stats {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+
+            #user-stats h3 {
+                font-size: 1em;
+                margin-bottom: 10px;
+            }
+
+            #user-stats > div {
+                gap: 12px;
+            }
+
+            #user-stats > div > div {
+                font-size: 0.85em;
+            }
+
+            #user-stats > div > div > div:first-child {
+                font-size: 1.5em !important;
+            }
+
+            #user-stats > div > div > div:nth-child(2) {
+                font-size: 1.1em !important;
+            }
+
+            #user-stats > div > div > div:nth-child(3) {
+                font-size: 0.75em !important;
+            }
+
+            #user-stats > div > div:nth-child(4),
+            #user-stats > div > div:nth-child(5) {
+                border-left: none;
+                border-top: 2px solid #e9d5ff;
+                padding-left: 0;
+                padding-top: 12px;
+                flex-basis: 40%;
+            }
+
+            .game-header {
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .theme-clue {
+                font-size: 1em;
+            }
+
+            .timer {
+                font-size: 1.1em;
+                min-width: auto;
+            }
+
+            .sentence-item {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+
+            .sentence-display {
+                font-size: 0.95em;
+                margin-bottom: 10px;
+            }
+
+            .blank {
+                padding: 2px 8px;
+                margin: 0 4px;
+                letter-spacing: 2px;
+                font-size: 0.9em;
+            }
+
+            .guess-input-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .guess-input-container input {
+                width: 100%;
+                padding: 12px;
+                font-size: 1em;
+            }
+
+            .guess-input-container button {
+                width: 100%;
+                padding: 12px;
+                font-size: 0.95em;
+            }
+
+            .clue-btn {
+                width: 100%;
+                padding: 10px;
+                font-size: 0.9em;
+            }
+
+            .letters-collected {
+                padding: 12px;
+                margin: 12px 0 8px 0;
+            }
+
+            .letters-collected h3 {
+                font-size: 1em;
+                margin-bottom: 10px;
+            }
+
+            .collected-letters {
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+
+            .letter-box {
+                width: 40px;
+                height: 40px;
+                font-size: 1.3em;
+                border-width: 2px;
+            }
+
+            .final-guess-container p {
+                font-size: 0.95em !important;
+                margin: 10px 0 8px 0 !important;
+            }
+
+            .final-guess-container input {
+                padding: 14px;
+                font-size: 1.1em;
+                letter-spacing: 6px;
+            }
+
+            .btn {
+                padding: 14px;
+                font-size: 1em;
+            }
+
+            .success-animation {
+                padding: 20px 15px;
+            }
+
+            .success-animation h2 {
+                font-size: 2em;
+                margin-bottom: 12px;
+            }
+
+            #trophy-display {
+                font-size: 4em !important;
+                margin: 15px 0 !important;
+            }
+
+            #trophy-text {
+                font-size: 1.1em !important;
+            }
+
+            .success-animation p {
+                font-size: 1.2em !important;
+            }
+
+            .success-animation p:last-of-type {
+                font-size: 1em !important;
+            }
+
+            .help-text {
+                padding: 10px 12px;
+                margin-bottom: 12px;
+            }
+
+            .help-text p {
+                font-size: 0.85em;
+                margin-bottom: 5px;
+            }
+
+            .sentence-input {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+
+            .sentence-input label {
+                font-size: 0.85em;
+                margin-bottom: 6px;
+            }
+
+            .sentence-input input,
+            .sentence-input textarea {
+                padding: 10px;
+                font-size: 0.9em;
+                margin-bottom: 8px;
+            }
+
+            .letter-position {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .sentence-input input[type="number"] {
+                width: 100%;
+            }
+
+            .final-word-input {
+                padding: 14px;
+                margin: 15px 0;
+            }
+
+            .final-word-input label {
+                font-size: 1em;
+            }
+
+            .final-word-input input {
+                padding: 14px;
+                font-size: 1.2em;
+                letter-spacing: 6px;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.3em;
+            }
+
+            .letter-box {
+                width: 35px;
+                height: 35px;
+                font-size: 1.2em;
+            }
+
+            .collected-letters {
+                gap: 4px;
+            }
+
+            #user-stats > div {
+                gap: 8px;
+            }
+
+            .final-guess-container input {
+                letter-spacing: 4px;
+                font-size: 1em;
+            }
+        }
     </style>
 </head>
 <body>
