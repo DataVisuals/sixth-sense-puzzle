@@ -988,14 +988,22 @@
 
             <div class="help-text" style="margin-top: 20px;">
                 <p><strong>Or Create Your Own:</strong></p>
-                <p>1. Write 5 sentences, using <strong>___</strong> (three underscores) as a placeholder for the missing word</p>
-                <p>2. Enter the missing word separately (the guesser will NOT see this)</p>
-                <p>3. For each missing word, specify which letter position (1-based) contributes to the final word</p>
-                <p>4. Enter the final 5-letter word that will be formed from those letters</p>
+                <p>1. Give your puzzle a name and theme</p>
+                <p>2. Write 5 sentences, using <strong>___</strong> (three underscores) as a placeholder for the missing word</p>
+                <p>3. Enter the missing word separately (the guesser will NOT see this)</p>
+                <p>4. For each missing word, specify which letter position (1-based) contributes to the final word</p>
+                <p>5. Enter the final 5-letter word that will be formed from those letters</p>
                 <p><strong>Example:</strong> "The cat sat on the ___" with missing word "mat"</p>
             </div>
 
             <div id="setter-form">
+                <div class="sentence-input" style="background: var(--stats-bg); border-color: var(--stats-border);">
+                    <label><i class="fas fa-tag"></i> Puzzle Name:</label>
+                    <input type="text" id="puzzleName" placeholder="e.g., Ocean Adventure, City Lights, Mountain Escape">
+                    <label style="margin-top: 10px;"><i class="fas fa-bookmark"></i> Theme/Category (optional):</label>
+                    <input type="text" id="puzzleTheme" placeholder="e.g., nature, urban, adventure (auto-generated from name if left blank)">
+                </div>
+
                 <div class="sentence-input">
                     <label>Sentence 1:</label>
                     <textarea id="sentence1" rows="2" placeholder="e.g., The cat sat on the ___"></textarea>
@@ -1788,6 +1796,10 @@
 
             const puzzle = puzzleDatabase[selectedIndex];
 
+            // Fill in the puzzle name and theme
+            document.getElementById('puzzleName').value = puzzle.name || '';
+            document.getElementById('puzzleTheme').value = puzzle.theme || '';
+
             // Fill in the form with the selected puzzle data
             for (let i = 0; i < 5; i++) {
                 document.getElementById(`sentence${i + 1}`).value = puzzle.sentences[i];
@@ -1797,7 +1809,7 @@
 
             document.getElementById('finalWord').value = puzzle.finalWord;
 
-            alert(`Loaded "${puzzle.name}" puzzle! You can edit it or click "Save Puzzle & Start Game" to play.`);
+            alert(`Loaded "${puzzle.name}" puzzle! You can edit it or click "Save & Play" to play.`);
         }
 
         async function getPuzzleOfTheDay() {
@@ -1853,7 +1865,18 @@
         }
 
         async function savePuzzle() {
+            const puzzleName = document.getElementById('puzzleName').value.trim();
+            const puzzleTheme = document.getElementById('puzzleTheme').value.trim();
+
+            // Validate puzzle name
+            if (!puzzleName) {
+                alert('Please give your puzzle a name!');
+                return;
+            }
+
             const puzzle = {
+                name: puzzleName,
+                theme: puzzleTheme || puzzleName.toLowerCase().replace(/\s+/g, '-'),
                 sentences: [],
                 words: [],
                 positions: [],
@@ -1905,23 +1928,11 @@
                 return;
             }
 
-            // Ask for puzzle name if submitting to community
-            const submitToCommunity = document.getElementById('submitToCommunity').checked;
-            if (submitToCommunity) {
-                const puzzleName = prompt("Give your puzzle a name (e.g., 'Ocean Adventure', 'City Lights'):");
-                if (puzzleName && puzzleName.trim()) {
-                    puzzle.name = puzzleName.trim();
-                    puzzle.theme = puzzleName.toLowerCase().replace(/\s+/g, '-');
-                } else {
-                    alert("A puzzle name is required to submit to the community.");
-                    return;
-                }
-            }
-
             // Save to localStorage
             localStorage.setItem('wordPuzzle', JSON.stringify(puzzle));
 
             // Submit to Firebase if checkbox is checked
+            const submitToCommunity = document.getElementById('submitToCommunity').checked;
             if (submitToCommunity) {
                 const submitted = await submitPuzzleToFirebase(puzzle);
                 if (submitted) {
@@ -1929,7 +1940,7 @@
                     document.getElementById('submitToCommunity').checked = false;
                 }
             } else {
-                alert('Puzzle saved successfully!');
+                alert(`Puzzle "${puzzle.name}" saved successfully!`);
             }
 
             // Switch to guesser mode
