@@ -1129,7 +1129,11 @@
         // ==========================================
         // FIREBASE CONFIGURATION
         // ==========================================
-        // These credentials are SAFE to be public - security is handled by Firestore Rules
+        // ⚠️ IMPORTANT: These credentials are SAFE and INTENDED to be public!
+        // Firebase web API keys are NOT secrets - they identify your Firebase project
+        // Security is enforced by Firestore Security Rules (server-side, cannot be bypassed)
+        // See: https://firebase.google.com/docs/projects/api-keys
+        // GitHub Secret Scanning: This is a false positive - safe to dismiss
         const firebaseConfig = {
             apiKey: "AIzaSyBOVYGRzrqG7FVf_k7wCag1Od8v1v15qN0",
             authDomain: "sixth-sense-cf327.firebaseapp.com",
