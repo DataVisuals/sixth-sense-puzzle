@@ -4,7 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Sixth Sense</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        :root {
+            --bg-gradient-start: #6366f1;
+            --bg-gradient-mid: #8b5cf6;
+            --bg-gradient-end: #d946ef;
+            --container-bg: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --input-bg: #ffffff;
+            --input-border: #e5e7eb;
+            --card-bg: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            --card-hover-border: #c7d2fe;
+            --success-bg: #d1fae5;
+            --success-border: #6ee7b7;
+            --success-text: #059669;
+            --error-bg: #fee2e2;
+            --error-border: #fca5a5;
+            --error-text: #dc2626;
+            --help-bg: linear-gradient(135deg, #fef3c7, #fde68a);
+            --help-border: #f59e0b;
+            --stats-bg: linear-gradient(135deg, #faf5ff, #f3e8ff);
+            --stats-border: #e9d5ff;
+            --theme-bg: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            --theme-border: #7dd3fc;
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient-start: #1e1b4b;
+            --bg-gradient-mid: #4c1d95;
+            --bg-gradient-end: #701a75;
+            --container-bg: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --border-color: #374151;
+            --input-bg: #374151;
+            --input-border: #4b5563;
+            --card-bg: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+            --card-hover-border: #6366f1;
+            --success-bg: #065f46;
+            --success-border: #059669;
+            --success-text: #34d399;
+            --error-bg: #7f1d1d;
+            --error-border: #dc2626;
+            --error-text: #fca5a5;
+            --help-bg: linear-gradient(135deg, #78350f, #92400e);
+            --help-border: #f59e0b;
+            --stats-bg: linear-gradient(135deg, #4c1d95, #5b21b6);
+            --stats-border: #7c3aed;
+            --theme-bg: linear-gradient(135deg, #0c4a6e, #075985);
+            --theme-border: #0284c7;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -13,16 +68,17 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
             min-height: 100vh;
             padding: 10px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            transition: background 0.3s ease;
         }
 
         .container {
-            background: white;
+            background: var(--container-bg);
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -30,6 +86,31 @@
             width: 100%;
             animation: fadeIn 0.5s ease-out;
             margin: 10px 0;
+            transition: background 0.3s ease;
+        }
+
+        .dark-mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 8px 16px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .dark-mode-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .dark-mode-toggle i {
+            font-size: 1.2em;
+            color: white;
         }
 
         @keyframes fadeIn {
@@ -56,7 +137,7 @@
         }
 
         h2 {
-            color: #1f2937;
+            color: var(--text-primary);
             margin-bottom: 12px;
             font-size: 1.3em;
             font-weight: 700;
@@ -99,14 +180,14 @@
         .sentence-input {
             margin-bottom: 12px;
             padding: 12px;
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            background: var(--card-bg);
             border-radius: 12px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
         .sentence-input:hover {
-            border-color: #c7d2fe;
+            border-color: var(--card-hover-border);
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
         }
 
@@ -114,7 +195,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #374151;
+            color: var(--text-primary);
             font-size: 0.9em;
         }
 
@@ -122,12 +203,14 @@
         .sentence-input textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid var(--input-border);
             border-radius: 8px;
             font-size: 0.95em;
             margin-bottom: 10px;
             transition: all 0.3s ease;
             font-family: inherit;
+            background: var(--input-bg);
+            color: var(--text-primary);
         }
 
         .sentence-input input[type="text"]:focus,
@@ -140,10 +223,12 @@
         .sentence-input input[type="number"] {
             width: 80px;
             padding: 10px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid var(--input-border);
             border-radius: 8px;
             font-size: 1em;
             transition: all 0.3s ease;
+            background: var(--input-bg);
+            color: var(--text-primary);
         }
 
         .sentence-input input[type="number"]:focus {
@@ -225,21 +310,21 @@
             align-items: center;
             margin-bottom: 15px;
             padding: 10px 15px;
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            background: var(--theme-bg);
             border-radius: 12px;
-            border: 2px solid #7dd3fc;
+            border: 2px solid var(--theme-border);
         }
 
         .theme-clue {
             font-size: 1.1em;
             font-weight: 600;
-            color: #0369a1;
+            color: var(--text-primary);
         }
 
         .timer {
             font-size: 1.3em;
             font-weight: 700;
-            color: #0c4a6e;
+            color: var(--text-primary);
             font-family: monospace;
             min-width: 80px;
             text-align: right;
@@ -248,14 +333,14 @@
         .sentence-item {
             margin-bottom: 12px;
             padding: 12px;
-            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            background: var(--card-bg);
             border-radius: 12px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
         .sentence-item:hover {
-            border-color: #c7d2fe;
+            border-color: var(--card-hover-border);
             box-shadow: 0 4px 16px rgba(99, 102, 241, 0.08);
         }
 
@@ -263,7 +348,7 @@
             font-size: 1.05em;
             margin-bottom: 12px;
             line-height: 1.6;
-            color: #1f2937;
+            color: var(--text-primary);
         }
 
         .blank {
@@ -288,11 +373,13 @@
         .guess-input-container input {
             flex: 1;
             padding: 14px 16px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid var(--input-border);
             border-radius: 10px;
             font-size: 1em;
             transition: all 0.3s ease;
             font-family: inherit;
+            background: var(--input-bg);
+            color: var(--text-primary);
         }
 
         .guess-input-container input:focus {
@@ -368,15 +455,15 @@
         }
 
         .status.correct {
-            color: #059669;
-            background: #d1fae5;
-            border: 1px solid #6ee7b7;
+            color: var(--success-text);
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
         }
 
         .status.incorrect {
-            color: #dc2626;
-            background: #fee2e2;
-            border: 1px solid #fca5a5;
+            color: var(--error-text);
+            background: var(--error-bg);
+            border: 1px solid var(--error-border);
         }
 
         .revealed-word {
@@ -440,7 +527,7 @@
             justify-content: center;
             font-size: 1.6em;
             font-weight: 800;
-            background: white;
+            background: var(--container-bg);
             color: #7c3aed;
             box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
             transition: all 0.3s ease;
@@ -489,6 +576,8 @@
             letter-spacing: 8px;
             transition: all 0.3s ease;
             font-family: monospace;
+            background: var(--input-bg);
+            color: var(--text-primary);
         }
 
         .final-guess-container input:focus {
@@ -532,18 +621,18 @@
         }
 
         .help-text {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            background: var(--help-bg);
             padding: 12px 15px;
             border-radius: 10px;
             margin-bottom: 15px;
-            border-left: 4px solid #f59e0b;
+            border-left: 4px solid var(--help-border);
             box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
         }
 
         .help-text p {
             margin-bottom: 6px;
             line-height: 1.4;
-            color: #78350f;
+            color: var(--text-primary);
             font-size: 0.9em;
         }
 
@@ -552,7 +641,8 @@
         }
 
         .help-text strong {
-            color: #92400e;
+            color: var(--text-primary);
+            font-weight: 700;
         }
 
         /* Mobile Responsive Styles */
@@ -829,47 +919,52 @@
     </style>
 </head>
 <body>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon" id="theme-icon"></i>
+    </button>
     <div class="container">
         <h1>The Sixth Sense</h1>
 
         <div id="mode-selection">
-            <div id="user-stats" style="text-align: center; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #faf5ff, #f3e8ff); border-radius: 12px; border: 2px solid #e9d5ff;">
-                <h3 style="color: #6b21a8; margin-bottom: 12px; font-size: 1.1em;">Your Statistics</h3>
+            <div id="user-stats" style="text-align: center; margin-bottom: 20px; padding: 15px; background: var(--stats-bg); border-radius: 12px; border: 2px solid var(--stats-border);">
+                <h3 style="color: #6b21a8; margin-bottom: 12px; font-size: 1.1em;"><i class="fas fa-chart-line"></i> Your Statistics</h3>
                 <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                     <div style="text-align: center;">
-                        <div style="font-size: 2em;">🏆</div>
+                        <div style="font-size: 2em;"><i class="fas fa-trophy" style="color: #d97706;"></i></div>
                         <div style="font-weight: 700; font-size: 1.3em; color: #d97706;" id="gold-count">0</div>
-                        <div style="font-size: 0.85em; color: #6b7280;">Gold</div>
+                        <div style="font-size: 0.85em; color: var(--text-secondary);">Gold</div>
                     </div>
                     <div style="text-align: center;">
-                        <div style="font-size: 2em; filter: grayscale(0.3) brightness(1.3);">🏆</div>
+                        <div style="font-size: 2em;"><i class="fas fa-trophy" style="color: #9ca3af;"></i></div>
                         <div style="font-weight: 700; font-size: 1.3em; color: #6b7280;" id="silver-count">0</div>
-                        <div style="font-size: 0.85em; color: #6b7280;">Silver</div>
+                        <div style="font-size: 0.85em; color: var(--text-secondary);">Silver</div>
                     </div>
                     <div style="text-align: center;">
-                        <div style="font-size: 2em; filter: hue-rotate(20deg) saturate(1.5) brightness(0.9);">🏆</div>
+                        <div style="font-size: 2em;"><i class="fas fa-trophy" style="color: #92400e;"></i></div>
                         <div style="font-weight: 700; font-size: 1.3em; color: #92400e;" id="bronze-count">0</div>
-                        <div style="font-size: 0.85em; color: #6b7280;">Bronze</div>
+                        <div style="font-size: 0.85em; color: var(--text-secondary);">Bronze</div>
                     </div>
-                    <div style="text-align: center; border-left: 2px solid #e9d5ff; padding-left: 20px;">
-                        <div style="font-size: 2em;">🔥</div>
-                        <div style="font-weight: 700; font-size: 1.3em; color: #ea580c;" id="streak-count">0</div>
-                        <div style="font-size: 0.85em; color: #6b7280;">Day Streak</div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--stats-border);">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5em;"><i class="fas fa-fire" style="color: #ea580c;"></i></div>
+                        <div style="font-weight: 700; font-size: 1.1em; color: #ea580c;" id="streak-count">0</div>
+                        <div style="font-size: 0.75em; color: var(--text-secondary);">Day Streak</div>
                     </div>
-                    <div style="text-align: center; border-left: 2px solid #e9d5ff; padding-left: 20px;">
-                        <div style="font-size: 2em;">⚡</div>
-                        <div style="font-weight: 700; font-size: 1.3em; color: #7c3aed; font-family: monospace;" id="fastest-time">--:--</div>
-                        <div style="font-size: 0.85em; color: #6b7280;">Best Time</div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.5em;"><i class="fas fa-bolt" style="color: #7c3aed;"></i></div>
+                        <div style="font-weight: 700; font-size: 1.1em; color: #7c3aed; font-family: monospace;" id="fastest-time">--:--</div>
+                        <div style="font-size: 0.75em; color: var(--text-secondary);">Best Time</div>
                     </div>
                 </div>
             </div>
             <div class="mode-selector">
-                <button class="mode-btn" onclick="showSetter()">Create Puzzle</button>
-                <button class="mode-btn" onclick="showGuesser()">Play Puzzle</button>
+                <button class="mode-btn" onclick="showSetter()"><i class="fas fa-plus-circle"></i> Create Puzzle</button>
+                <button class="mode-btn" onclick="showGuesser()"><i class="fas fa-play-circle"></i> Play Puzzle</button>
             </div>
             <div style="text-align: center; margin-top: 24px; padding: 20px; background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: 12px; border: 2px solid #86efac;">
                 <p style="margin-bottom: 12px; font-weight: 600; color: #166534;">Play Today's Puzzle:</p>
-                <button class="mode-btn" onclick="quickPlay()" style="background: linear-gradient(135deg, #10b981, #059669); width: auto; padding: 14px 32px;">📅 Daily Puzzle</button>
+                <button class="mode-btn" onclick="quickPlay()" style="background: linear-gradient(135deg, #10b981, #059669); width: auto; padding: 14px 32px;"><i class="fas fa-calendar-day"></i> Daily Puzzle</button>
             </div>
         </div>
 
@@ -880,10 +975,10 @@
             <div class="help-text">
                 <p><strong>Quick Start:</strong> Load a pre-made puzzle to test the game or get inspired!</p>
                 <div style="display: flex; gap: 12px; margin-top: 12px; align-items: center;">
-                    <select id="puzzle-selector" style="flex: 1; padding: 12px; border: 2px solid #f59e0b; border-radius: 8px; font-size: 1em; background: white; font-weight: 600; cursor: pointer;">
+                    <select id="puzzle-selector" class="form-select" style="flex: 1; padding: 12px; border: 2px solid #f59e0b; border-radius: 8px; font-size: 1em; background: var(--input-bg); color: var(--text-primary); font-weight: 600; cursor: pointer;">
                         <option value="">-- Select a Pre-made Puzzle --</option>
                     </select>
-                    <button onclick="loadSelectedPuzzle()" style="padding: 12px 24px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3); transition: all 0.3s ease;">Load Puzzle</button>
+                    <button onclick="loadSelectedPuzzle()" style="padding: 12px 24px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3); transition: all 0.3s ease;"><i class="fas fa-download"></i> Load Puzzle</button>
                 </div>
             </div>
 
@@ -957,7 +1052,7 @@
                     <input type="text" id="finalWord" maxlength="5" placeholder="Enter final word" style="text-transform: uppercase;">
                 </div>
 
-                <button class="btn" onclick="savePuzzle()">Save Puzzle & Start Game</button>
+                <button class="btn" onclick="savePuzzle()"><i class="fas fa-save"></i> Save Puzzle & Start Game</button>
             </div>
         </div>
 
@@ -988,28 +1083,58 @@
                         </p>
                         <input type="text" id="final-guess" maxlength="5" placeholder="Enter your guess" oninput="validateFinalGuess()">
                         <div style="display: flex; gap: 10px; margin-top: 10px;">
-                            <button class="btn" id="submit-final-btn" onclick="checkFinalGuess()" style="flex: 1;" disabled>Submit Final Answer</button>
+                            <button class="btn" id="submit-final-btn" onclick="checkFinalGuess()" style="flex: 1;" disabled><i class="fas fa-paper-plane"></i> Submit Final Answer</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div id="success-screen" class="hidden success-animation">
-                <h2>Congratulations!</h2>
-                <div id="trophy-display" style="font-size: 6em; margin: 20px 0;">🏆</div>
+                <h2><i class="fas fa-star"></i> Congratulations! <i class="fas fa-star"></i></h2>
+                <div id="trophy-display" style="font-size: 6em; margin: 20px 0;"><i class="fas fa-trophy"></i></div>
                 <p id="trophy-text" style="font-size: 1.3em; margin: 10px 0; font-weight: 700; color: #059669;">
                     You have won a gold trophy!
                 </p>
-                <p style="font-size: 1.4em; margin: 15px 0; font-weight: 600; color: #059669;">You solved the puzzle!</p>
-                <p style="font-size: 1.2em; margin: 10px 0; font-weight: 600; color: #0c4a6e;">
-                    Time: <span id="completion-time" style="font-family: monospace;">00:00</span>
+                <p style="font-size: 1.4em; margin: 15px 0; font-weight: 600; color: #059669;"><i class="fas fa-check-circle"></i> You solved the puzzle!</p>
+                <p style="font-size: 1.2em; margin: 10px 0; font-weight: 600; color: var(--text-primary);">
+                    <i class="fas fa-clock"></i> Time: <span id="completion-time" style="font-family: monospace;">00:00</span>
                 </p>
-                <button class="btn play-again-btn" onclick="resetGame()">Play Again</button>
+                <button class="btn play-again-btn" onclick="resetGame()"><i class="fas fa-redo"></i> Play Again</button>
             </div>
         </div>
     </div>
 
     <script>
+        // Dark mode toggle
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            const currentTheme = html.getAttribute('data-theme');
+
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+                setCookie('theme', 'light', 365);
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                setCookie('theme', 'dark', 365);
+            }
+        }
+
+        // Load theme preference on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = getCookie('theme');
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+            }
+
+            displayUserStats();
+        });
+
         // Cookie helper functions
         function setCookie(name, value, days) {
             const expires = new Date();
@@ -1122,11 +1247,6 @@
                 document.getElementById('fastest-time').textContent = '--:--';
             }
         }
-
-        // Initialize stats on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            displayUserStats();
-        });
 
         // Pre-made puzzle database
         // Final word letters must exactly match collected letters
@@ -1666,8 +1786,8 @@
                     </div>
                     <div class="guess-input-container">
                         <input type="text" id="guess-${index}" placeholder="Your guess (${wordLength} letters)">
-                        <button onclick="checkGuess(${index})">Submit</button>
-                        <button class="clue-btn" id="clue-${index}" onclick="giveClue(${index})">💡 Clue</button>
+                        <button onclick="checkGuess(${index})"><i class="fas fa-check"></i> Submit</button>
+                        <button class="clue-btn" id="clue-${index}" onclick="giveClue(${index})"><i class="fas fa-lightbulb"></i> Clue</button>
                     </div>
                     <div class="status" id="status-${index}"></div>
                 `;
@@ -1816,22 +1936,19 @@
 
                 if (gameState.cluesUsed === 0) {
                     // Gold trophy
-                    trophyDisplay.textContent = '🏆';
-                    trophyDisplay.style.filter = 'hue-rotate(0deg) brightness(1.2)';
+                    trophyDisplay.innerHTML = '<i class="fas fa-trophy" style="color: #d97706;"></i>';
                     trophyText.textContent = 'You have won a gold trophy!';
                     trophyText.style.color = '#d97706'; // Gold color
                     trophyType = 'gold';
                 } else if (gameState.cluesUsed === 1) {
                     // Silver trophy
-                    trophyDisplay.textContent = '🏆';
-                    trophyDisplay.style.filter = 'grayscale(0.3) brightness(1.3)';
+                    trophyDisplay.innerHTML = '<i class="fas fa-trophy" style="color: #9ca3af;"></i>';
                     trophyText.textContent = 'You have won a silver trophy!';
                     trophyText.style.color = '#6b7280'; // Silver color
                     trophyType = 'silver';
                 } else {
                     // Bronze trophy
-                    trophyDisplay.textContent = '🏆';
-                    trophyDisplay.style.filter = 'hue-rotate(20deg) saturate(1.5) brightness(0.9)';
+                    trophyDisplay.innerHTML = '<i class="fas fa-trophy" style="color: #92400e;"></i>';
                     trophyText.textContent = 'You have won a bronze trophy!';
                     trophyText.style.color = '#92400e'; // Bronze color
                     trophyType = 'bronze';
