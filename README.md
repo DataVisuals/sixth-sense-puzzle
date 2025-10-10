@@ -26,7 +26,7 @@ An interactive word puzzle game where players guess missing words from sentences
 ### 👥 Community Features
 - **Submit Puzzles** - Create and share your own puzzles with everyone
 - **Community Database** - Powered by Firebase Firestore
-- **Approval System** - Manual moderation ensures quality puzzles
+- **Instant Availability** - Submitted puzzles appear immediately for all players
 - **Play Tracking** - See which community puzzles are most popular
 
 ### 🎨 User Experience
@@ -130,7 +130,7 @@ sixth-sense-puzzle/
 - **Security Rules:** All access control enforced server-side via Firestore Rules
 - **Anonymous Auth:** Rate limiting and spam prevention
 - **Validation:** Server-side puzzle format validation
-- **Manual Approval:** Puzzles start as "pending" and require approval
+- **Auto-Approval:** Puzzles appear instantly (manual moderation available if needed)
 
 ### Data Privacy
 - **No Personal Data:** Anonymous authentication only

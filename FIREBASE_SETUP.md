@@ -59,12 +59,13 @@ service cloud.firestore {
       allow read: if resource.data.status == 'approved';
 
       // Authenticated users can create puzzles (with validation)
+      // Puzzles are auto-approved for immediate availability
       allow create: if request.auth != null
                     && request.resource.data.sentences.size() == 5
                     && request.resource.data.words.size() == 5
                     && request.resource.data.positions.size() == 5
                     && request.resource.data.finalWord.size() == 5
-                    && request.resource.data.status == 'pending'
+                    && request.resource.data.status == 'approved'
                     && request.resource.data.plays == 0;
 
       // Only allow incrementing plays field
@@ -103,20 +104,24 @@ service cloud.firestore {
 
 3. Visit your game and try creating a puzzle with the "Submit to Community" checkbox checked
 
-4. Check Firebase Console > Firestore Database to see your puzzle appear with status "pending"
+4. Check Firebase Console > Firestore Database to see your puzzle appear with status "approved"
 
-## Step 8: Approve Puzzles (Manual Moderation)
+5. Refresh the game and your puzzle should appear in the puzzle selector immediately!
 
-To approve puzzles and make them visible:
+## Step 8: Verify Puzzle Submissions (Optional)
+
+Puzzles are **automatically approved** and appear immediately! You can optionally monitor submissions:
 
 1. Go to **Firestore Database** in Firebase Console
 2. Click on the **"puzzles"** collection
-3. Click on a puzzle document
-4. Find the `status` field
-5. Click the field value and change it from `"pending"` to `"approved"`
-6. Click **"Update"**
+3. You'll see all submitted puzzles with their data
 
-The puzzle will now appear in everyone's puzzle selector and daily rotation!
+If you ever need to remove inappropriate puzzles:
+- Click on the puzzle document
+- Click the three dots (⋮) menu
+- Select **"Delete document"**
+
+**Note:** Puzzles are auto-approved for the best user experience. If you prefer manual approval, see the "Advanced Configuration" section below.
 
 ## Security Notes
 
@@ -145,20 +150,47 @@ The puzzle will now appear in everyone's puzzle selector and daily rotation!
 **Problem:** Security rules errors
 - **Solution:** Make sure you published the rules exactly as shown above
 
-## Optional: Advanced Features
+## Advanced Configuration
 
-### Add Admin Panel (Future Enhancement)
-You could create a separate admin page to:
+### Enable Manual Approval (Optional)
+
+If you want to review puzzles before they go live:
+
+1. **Update the code** in `index.html` (line ~1203):
+   ```javascript
+   status: "pending", // Change from "approved" to "pending"
+   ```
+
+2. **Update Firebase Security Rules**:
+   ```javascript
+   // Change line that says:
+   && request.resource.data.status == 'approved'
+   // To:
+   && request.resource.data.status == 'pending'
+   ```
+
+3. **Manually approve puzzles**:
+   - Go to Firestore Database
+   - Click on a puzzle
+   - Change status from `"pending"` to `"approved"`
+
+### Other Advanced Features
+
+#### Add Admin Panel
+Create a separate admin page to:
 - View pending puzzles
 - Approve/reject with one click
 - See statistics
 - Ban spam users
 
-### Add Upvoting
+#### Add Upvoting
 Users could vote on their favorite puzzles, and popular ones appear more often.
 
-### Add Categories/Tags
+#### Add Categories/Tags
 Allow filtering puzzles by difficulty or theme.
+
+#### Add Reporting
+Allow users to report inappropriate puzzles for review.
 
 ## Cost Estimate
 

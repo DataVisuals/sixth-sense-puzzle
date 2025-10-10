@@ -1200,7 +1200,7 @@
                     ...puzzle,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     createdBy: user.uid,
-                    status: "pending", // pending, approved, rejected
+                    status: "approved", // Auto-approve all community puzzles
                     plays: 0,
                     upvotes: 0
                 };
@@ -1208,7 +1208,7 @@
                 // Submit to Firestore
                 const docRef = await db.collection('puzzles').add(puzzleData);
 
-                alert(`🎉 Puzzle submitted successfully!\n\nYour puzzle "${puzzle.name || 'Unnamed'}" has been submitted to the community.\n\nIt will appear in the puzzle database once approved.`);
+                alert(`🎉 Puzzle submitted successfully!\n\nYour puzzle "${puzzle.name || 'Unnamed'}" is now live and available to all players!\n\nOthers can play it immediately in the daily rotation.`);
                 return true;
             } catch (error) {
                 console.error("Error submitting puzzle:", error);
