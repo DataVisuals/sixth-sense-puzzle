@@ -8,6 +8,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <style>
         :root {
             --bg-gradient-start: #6366f1;
@@ -1052,7 +1056,24 @@
                     <input type="text" id="finalWord" maxlength="5" placeholder="Enter final word" style="text-transform: uppercase;">
                 </div>
 
-                <button class="btn" onclick="savePuzzle()"><i class="fas fa-save"></i> Save Puzzle & Start Game</button>
+                <div style="margin: 20px 0; padding: 15px; background: var(--stats-bg); border-radius: 12px; border: 2px solid var(--stats-border);">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-primary);">
+                        <input type="checkbox" id="submitToCommunity" style="width: 20px; height: 20px; cursor: pointer;">
+                        <span style="font-weight: 600;">
+                            <i class="fas fa-users"></i> Submit to Community Database
+                            <small style="display: block; font-weight: normal; opacity: 0.8; margin-top: 5px;">
+                                Share your puzzle with everyone! It will be reviewed before appearing in the daily rotation.
+                            </small>
+                        </span>
+                    </label>
+                    <div style="margin-top: 10px; padding: 10px; background: var(--help-bg); border-radius: 8px; font-size: 0.85em;" id="firebase-status">
+                        <i class="fas fa-info-circle"></i> <span id="firebase-status-text">Checking Firebase status...</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" onclick="savePuzzle()" style="flex: 1;"><i class="fas fa-save"></i> Save & Play</button>
+                </div>
             </div>
         </div>
 
@@ -1105,6 +1126,134 @@
     </div>
 
     <script>
+        // ==========================================
+        // FIREBASE CONFIGURATION
+        // ==========================================
+        // TODO: Replace these placeholder values with your actual Firebase config
+        // Get these from: Firebase Console > Project Settings > Your Apps > Web App
+        // These credentials are SAFE to be public - security is handled by Firestore Rules
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+
+        // Initialize Firebase
+        let db = null;
+        let auth = null;
+        let firebaseEnabled = false;
+
+        try {
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY_HERE") {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                auth = firebase.auth();
+                firebaseEnabled = true;
+
+                // Sign in anonymously for rate limiting and security
+                auth.signInAnonymously().catch(error => {
+                    console.warn("Anonymous auth failed:", error);
+                });
+
+                console.log("✅ Firebase enabled - Community puzzles active!");
+            } else {
+                console.log("ℹ️ Firebase not configured - Using local puzzles only");
+            }
+        } catch (error) {
+            console.warn("Firebase initialization failed:", error);
+            firebaseEnabled = false;
+        }
+
+        // ==========================================
+        // COMMUNITY PUZZLE FUNCTIONS
+        // ==========================================
+
+        async function submitPuzzleToFirebase(puzzle) {
+            if (!firebaseEnabled || !db) {
+                alert("Firebase is not configured. Your puzzle is saved locally only.");
+                return false;
+            }
+
+            try {
+                const user = auth.currentUser;
+                if (!user) {
+                    alert("Please wait a moment and try again (authenticating...)");
+                    return false;
+                }
+
+                // Add metadata
+                const puzzleData = {
+                    ...puzzle,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdBy: user.uid,
+                    status: "pending", // pending, approved, rejected
+                    plays: 0,
+                    upvotes: 0
+                };
+
+                // Submit to Firestore
+                const docRef = await db.collection('puzzles').add(puzzleData);
+
+                alert(`🎉 Puzzle submitted successfully!\n\nYour puzzle "${puzzle.name || 'Unnamed'}" has been submitted to the community.\n\nIt will appear in the puzzle database once approved.`);
+                return true;
+            } catch (error) {
+                console.error("Error submitting puzzle:", error);
+                alert(`Error submitting puzzle: ${error.message}\n\nYour puzzle is still saved locally.`);
+                return false;
+            }
+        }
+
+        async function loadCommunityPuzzles() {
+            if (!firebaseEnabled || !db) {
+                return [];
+            }
+
+            try {
+                // Load approved community puzzles
+                const snapshot = await db.collection('puzzles')
+                    .where('status', '==', 'approved')
+                    .orderBy('plays', 'asc')
+                    .limit(50)
+                    .get();
+
+                const communityPuzzles = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    communityPuzzles.push({
+                        id: doc.id,
+                        name: data.name,
+                        theme: data.theme,
+                        sentences: data.sentences,
+                        words: data.words,
+                        positions: data.positions,
+                        finalWord: data.finalWord,
+                        community: true // Mark as community puzzle
+                    });
+                });
+
+                console.log(`✅ Loaded ${communityPuzzles.length} community puzzles`);
+                return communityPuzzles;
+            } catch (error) {
+                console.error("Error loading community puzzles:", error);
+                return [];
+            }
+        }
+
+        async function incrementPuzzlePlays(puzzleId) {
+            if (!firebaseEnabled || !db || !puzzleId) return;
+
+            try {
+                await db.collection('puzzles').doc(puzzleId).update({
+                    plays: firebase.firestore.FieldValue.increment(1)
+                });
+            } catch (error) {
+                console.warn("Could not increment play count:", error);
+            }
+        }
+
         // Dark mode toggle
         function toggleDarkMode() {
             const html = document.documentElement;
@@ -1250,7 +1399,7 @@
 
         // Pre-made puzzle database
         // Final word letters must exactly match collected letters
-        const puzzleDatabase = [
+        let puzzleDatabase = [
             // EASY PUZZLES
             {
                 name: "Coastal Escape",
@@ -1563,25 +1712,66 @@
         let startTime = null;
         let elapsedTime = 0;
 
-        function showSetter() {
+        async function showSetter() {
             document.getElementById('mode-selection').classList.add('hidden');
             document.getElementById('setter-interface').classList.remove('hidden');
             document.getElementById('guesser-interface').classList.add('hidden');
-            populatePuzzleSelector();
+            await populatePuzzleSelector();
+            updateFirebaseStatus();
         }
 
-        function populatePuzzleSelector() {
+        function updateFirebaseStatus() {
+            const statusText = document.getElementById('firebase-status-text');
+            const statusDiv = document.getElementById('firebase-status');
+
+            if (firebaseEnabled) {
+                statusText.innerHTML = '<strong>✅ Connected:</strong> Your puzzles can be shared with the community!';
+                statusDiv.style.background = 'var(--success-bg)';
+                statusDiv.style.color = 'var(--success-text)';
+                statusDiv.style.borderColor = 'var(--success-border)';
+            } else {
+                statusText.innerHTML = '<strong>ℹ️ Local Mode:</strong> Firebase not configured. Puzzles saved locally only.';
+                statusDiv.style.background = 'var(--help-bg)';
+                statusDiv.style.color = 'var(--text-primary)';
+                document.getElementById('submitToCommunity').disabled = true;
+                document.getElementById('submitToCommunity').checked = false;
+            }
+        }
+
+        async function populatePuzzleSelector() {
             const selector = document.getElementById('puzzle-selector');
             // Clear existing options except the first one
             selector.innerHTML = '<option value="">-- Select a Pre-made Puzzle --</option>';
 
-            // Add all puzzles from database
+            // Load community puzzles and merge with built-in ones
+            const communityPuzzles = await loadCommunityPuzzles();
+            const allPuzzles = [...puzzleDatabase, ...communityPuzzles];
+
+            // Add built-in puzzles
             puzzleDatabase.forEach((puzzle, index) => {
                 const option = document.createElement('option');
                 option.value = index;
-                option.textContent = puzzle.name;
+                option.textContent = `${puzzle.name} ⭐`;
                 selector.appendChild(option);
             });
+
+            // Add community puzzles
+            if (communityPuzzles.length > 0) {
+                const divider = document.createElement('option');
+                divider.disabled = true;
+                divider.textContent = '──────── Community Puzzles ────────';
+                selector.appendChild(divider);
+
+                communityPuzzles.forEach((puzzle, index) => {
+                    const option = document.createElement('option');
+                    option.value = puzzleDatabase.length + index;
+                    option.textContent = `${puzzle.name} 👥`;
+                    selector.appendChild(option);
+                });
+            }
+
+            // Update global puzzle database to include community puzzles
+            puzzleDatabase = allPuzzles;
         }
 
         function loadSelectedPuzzle() {
@@ -1607,20 +1797,28 @@
             alert(`Loaded "${puzzle.name}" puzzle! You can edit it or click "Save Puzzle & Start Game" to play.`);
         }
 
-        function getPuzzleOfTheDay() {
+        async function getPuzzleOfTheDay() {
+            // Load community puzzles first
+            const communityPuzzles = await loadCommunityPuzzles();
+            const allPuzzles = [...puzzleDatabase, ...communityPuzzles];
+
             // Get current date
             const now = new Date();
             // Calculate days since epoch (Jan 1, 1970)
             const daysSinceEpoch = Math.floor(now.getTime() / (1000 * 60 * 60 * 24));
             // Use modulo to cycle through puzzles
-            const puzzleIndex = daysSinceEpoch % puzzleDatabase.length;
-            return puzzleIndex;
+            const puzzleIndex = daysSinceEpoch % allPuzzles.length;
+            return { puzzle: allPuzzles[puzzleIndex], index: puzzleIndex };
         }
 
-        function quickPlay() {
+        async function quickPlay() {
             // Get the puzzle of the day (same for all users on the same day)
-            const puzzleIndex = getPuzzleOfTheDay();
-            const puzzle = puzzleDatabase[puzzleIndex];
+            const { puzzle, index } = await getPuzzleOfTheDay();
+
+            // Track if it's a community puzzle and increment play count
+            if (puzzle.id && puzzle.community) {
+                await incrementPuzzlePlays(puzzle.id);
+            }
 
             // Save it as the current puzzle
             localStorage.setItem('wordPuzzle', JSON.stringify(puzzle));
@@ -1651,7 +1849,7 @@
             document.getElementById('guesser-interface').classList.add('hidden');
         }
 
-        function savePuzzle() {
+        async function savePuzzle() {
             const puzzle = {
                 sentences: [],
                 words: [],
@@ -1704,9 +1902,32 @@
                 return;
             }
 
+            // Ask for puzzle name if submitting to community
+            const submitToCommunity = document.getElementById('submitToCommunity').checked;
+            if (submitToCommunity) {
+                const puzzleName = prompt("Give your puzzle a name (e.g., 'Ocean Adventure', 'City Lights'):");
+                if (puzzleName && puzzleName.trim()) {
+                    puzzle.name = puzzleName.trim();
+                    puzzle.theme = puzzleName.toLowerCase().replace(/\s+/g, '-');
+                } else {
+                    alert("A puzzle name is required to submit to the community.");
+                    return;
+                }
+            }
+
             // Save to localStorage
             localStorage.setItem('wordPuzzle', JSON.stringify(puzzle));
-            alert('Puzzle saved successfully!');
+
+            // Submit to Firebase if checkbox is checked
+            if (submitToCommunity) {
+                const submitted = await submitPuzzleToFirebase(puzzle);
+                if (submitted) {
+                    // Clear the form after successful community submission
+                    document.getElementById('submitToCommunity').checked = false;
+                }
+            } else {
+                alert('Puzzle saved successfully!');
+            }
 
             // Switch to guesser mode
             showGuesser();
